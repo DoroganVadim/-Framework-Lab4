@@ -1,0 +1,76 @@
+﻿@model Lab3.Models.Task
+
+@{
+    ViewData["Title"] = "Editare sarcină";
+}
+@{
+    var successMessage = TempData["SuccessMessage"];
+}
+@if (successMessage != null)
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+<h2>Editeaza sarcina</h2>
+
+<form asp-action="Update" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="@Model.id" />
+    <div>
+        <label>Titlu:</label>
+        <input type="text" asp-for="@Model.title" class="form-control" placeholder="Titlu" />
+        <span asp-validation-for="title" class="text-danger"></span>
+    </div>
+    <br>
+    <div>
+        <label>Descriere:</label>
+        <textarea asp-for="@Model.description" class="form-control" rows="5" placeholder="Descriere"></textarea>
+        <span asp-validation-for="description" class="text-danger"></span>
+    </div>
+    <br>
+    <div class="form-group">
+        <label>Data Limita:</label>
+        <input asp-for="@Model.due_date" class="form-control" type="date" />
+        <span asp-validation-for="due_date" class="text-danger"></span>
+    </div>
+    <br>
+    <div>
+        <label for="category">Categorie:</label>
+        <select name="idCategory" class="form-control">
+            <option value="">Selectați o categorie</option>
+            @foreach (var category in ViewBag.categories)
+            {
+                if (Model != null && Model?.category?.id == category.id)
+                {
+                    <option value="@category.id" selected>@category.name</option>
+                }
+                else
+                {
+                    <option value="@category.id">@category.name</option>
+                }
+            }
+        </select>
+        <span asp-validation-for="category" class="text-danger"></span>
+    </div>
+    <br>
+    <div>
+        <label>Etichete:</label>
+        @foreach (var tag in ViewBag.tags)
+        {
+            <div>
+                @if (Model != null && Model?.tags?.Contains(tag) ?? false)
+                {
+                    <input type="checkbox" name="tagIds" value="@tag.id" id="@tag.id" checked />
+                }
+                else
+                {
+                    <input type="checkbox" name="tagIds" value="@tag.id" id="@tag.id" />
+                }
+                <label for="@tag.id">@tag.name</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit">Editează</button>
+</form>

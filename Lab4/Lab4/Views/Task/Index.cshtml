@@ -1,0 +1,28 @@
+﻿@model List<Lab3.Models.Task>
+
+@foreach (var task in Model){
+<div>
+    id: @task.id <br>
+    Titlu: @task.title <br>
+    Descriere: @task.description<br>
+    Data Limita: @task.due_date<br>
+    Data Creare: @task.created_at <br>
+    Data Modificare: @task.updated_at <br>
+    Categorie: @(task.category?.name ?? "null")<br>
+    @{
+        string text = "";
+    }
+    @try {
+        foreach(var tag in task.tags)
+        {
+           text = text + tag.name + " ";
+        }
+    }
+    catch (Exception e)
+    {
+            text = "null";
+    }
+    Etichete: @text
+</div>
+<br><br>
+}

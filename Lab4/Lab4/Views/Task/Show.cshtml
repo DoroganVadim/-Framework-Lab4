@@ -1,0 +1,26 @@
+﻿@model Lab3.Models.Task
+
+<div>
+    id: @Model.id<br>
+    Titlu: @Model.title<br>
+    Descriere: @Model.description<br>
+    Data Limita: @Model.due_date<br>
+    Data Creare: @Model.created_at<br>
+    Data Modificare: @Model.updated_at<br>
+    Categorie: @(Model.category?.name ?? "null")<br>
+    @{
+        string text = "";
+    }
+    @try
+    {
+        foreach (var tag in Model.tags)
+        {
+            text = text + tag.name + " ";
+        }
+    }
+    catch (Exception e)
+    {
+        text = "null";
+    }
+    Etichete: @text
+</div>
